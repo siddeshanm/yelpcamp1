@@ -1,0 +1,47 @@
+
+<% layout('layouts/boilerplate') %>
+<div id="cluster-map" style="height: 500px; width:100%"></div>
+<div class="container">
+
+
+<h1>All Campgrounds</h1>
+
+        <% for( let camp of camps){ %>
+         <div class="card mb-3" >
+          <div class="row">
+            <div class="col-md-4">
+                <%  if(camp.image.length){ %>
+                    <img crossorigin="anonymous" class="img-fluid" src ='<%= camp.image[0].url%>' alt="">
+                    <%  }else{ %>
+                    <img  crossorigin="anonymous" class="img-fluid" src ='https://res.cloudinary.com/dlmcyunks/image/upload/v1697527746/yelpCamp/cjntrbt6tregoy8su5ov.jpg' alt="">
+                <% } %>
+               
+            </div>
+            <div class="col-md-8">
+                <h5 class="card-title"> <%= camp.title %> </h5>
+                <p class="card-text"><%= camp.description %></p>
+                <p class="card-text">
+                    <small class="text-muted"> <%= camp.location %></small>
+                </p>
+                <a href="/campgrounds/<%=camp.id%>" class="btn btn-primary"><%= camp.title%></a>
+            </div>
+          </div>
+         </div>
+        <% } %>
+        <script>
+            const accessToken = '<%- process.env.MAPBOX_KEY%>'
+            const opts = { toJSON: { virtuals: true } };
+            const campgrounds = {features : <%- JSON.stringify(camps) %>}
+            campgrounds.features = campgrounds.features.map(feature => {
+           return {
+          ...feature,
+          geometry: {
+           type: 'Point',
+            coordinates: feature.geoData.coordinates,
+       },
+      };
+   });
+            </script>
+        <script src="/javaScript/clusterMap.js"></script>
+    </div>
+    
