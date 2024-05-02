@@ -27,7 +27,7 @@ const MongoStore = require('connect-mongo')(session)
 const campgroundRoutes = require('./routes/campground')
 const reviewRoutes = require('./routes/review')
 const userRoutes = require('./routes/user')
-
+const port = process.env.PORT || 3000
 
 
 app.set('view engine', 'ejs')
@@ -168,6 +168,6 @@ app.use((err, req, res, next) => {
   res.status(status).render('error', {err})
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
     console.log("Hey I'M Listening to 3000")
 })
